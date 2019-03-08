@@ -10,17 +10,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FilaListener {
-	
+
 	private FactoryService factoryService;
-	
+
 	@Autowired
 	public FilaListener(FactoryService factoryService) {
 		this.factoryService = factoryService;
 	}
 
-    @JmsListener(destination = "teste")
-    public void messageConsumer(@Headers Map<String, Object> messageAttributes, @Payload String message) {
-    	factoryService.direcionaEmail(messageAttributes, message);
-    }
-	
+	@JmsListener(destination = "teste")
+	public void messageConsumer(@Headers Map<String, Object> messageAttributes, @Payload String message) {
+		factoryService.direcionaEmail(messageAttributes, message);
+	}
+
 }

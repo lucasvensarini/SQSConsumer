@@ -1,14 +1,14 @@
 package br.com.lcv.model;
 
-public class EmailBase {
+public class InfoBase {
 	
 	private String loc;
 	
-	public EmailBase() {
+	public InfoBase() {
 		
 	}
 	
-	public EmailBase(String loc) {
+	public InfoBase(String loc) {
 		this.loc = loc;
 	}
 	

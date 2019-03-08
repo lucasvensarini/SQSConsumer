@@ -16,24 +16,28 @@ public class ErroService {
 	private SQSProperties sqsProperties;
 	private ObjectMapper objectMapper;
 	private AmazonSQS amazonSQS;
-	
+
 	@Autowired
 	public ErroService(SQSProperties sqsProperties, ObjectMapper objectMapper, AmazonSQS amazonSQS) {
 		this.sqsProperties = sqsProperties;
 		this.objectMapper = objectMapper;
 		this.amazonSQS = amazonSQS;
 	}
-	
-	public void enviaParaFilaErro(String message, String mensagemErro) throws JsonProcessingException {
-		SendMessageRequest sendMessageRequest = new SendMessageRequest();
-		
-		Erro erro = new Erro(message, mensagemErro);
-		String erroJson = objectMapper.writeValueAsString(erro);
-		
-		sendMessageRequest.setQueueUrl(sqsProperties.getFilaTesteErroUrl());
-		sendMessageRequest.setMessageBody(erroJson);
-		
-		amazonSQS.sendMessage(sendMessageRequest);
+
+	public void enviaParaFilaErro(String message, String mensagemErro) {
+		try {
+			SendMessageRequest sendMessageRequest = new SendMessageRequest();
+
+			Erro erro = new Erro(message, mensagemErro);
+			String erroJson = objectMapper.writeValueAsString(erro);
+
+			sendMessageRequest.setQueueUrl(sqsProperties.getFilaTesteErroUrl());
+			sendMessageRequest.setMessageBody(erroJson);
+
+			amazonSQS.sendMessage(sendMessageRequest);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 }

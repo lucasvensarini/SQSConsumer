@@ -16,6 +16,8 @@ import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClient;
 
@@ -45,6 +47,12 @@ public class SQSConsumerMain {
 		return AmazonSQSClient.builder().withRegion(Regions.US_EAST_1)
 				.withCredentials(new AWSStaticCredentialsProvider(criaAWSCredentials())).build();
 	}
+	
+	@Bean
+	public AmazonSimpleEmailService defaultAmazonSimpleEmailService() {
+		return AmazonSimpleEmailServiceClientBuilder.standard().withRegion(Regions.US_EAST_1)
+				.withCredentials(new AWSStaticCredentialsProvider(criaAWSCredentials())).build();
+	}
 
 	@Bean
 	public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
@@ -57,7 +65,7 @@ public class SQSConsumerMain {
 	public JmsTemplate defaultJmsTemplate() {
 		return new JmsTemplate(connectionFactory);
 	}
-	
+
 	private AWSCredentials criaAWSCredentials() {
 		return new BasicAWSCredentials(awsProperties.getId(), awsProperties.getPassword());
 	}

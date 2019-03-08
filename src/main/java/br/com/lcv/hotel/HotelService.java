@@ -21,11 +21,13 @@ public class HotelService {
 		this.objectMapper = objectMapper;
 	}
 	
-	public void enviaEmailEmissao(String message) throws IOException {
-		
-		EmailEmissaoHotel emailEmissaoHotel = objectMapper.readValue(message, EmailEmissaoHotel.class);
-
-        System.out.println("Body: " + emailEmissaoHotel.getEmailBase().getLoc() + " " + emailEmissaoHotel.getNomeHotel());
+	public void enviaEmailEmissao(String message) {
+		try {
+			InfoEmissaoHotel infoEmissaoHotel = objectMapper.readValue(message, InfoEmissaoHotel.class);
+			System.out.println("Body: " + infoEmissaoHotel.getInfoBase().getLoc() + " " + infoEmissaoHotel.getNomeHotel());
+		} catch (IOException e) {
+			erroService.enviaParaFilaErro(message, "Erro de parse");
+		}
 	}
 	
 }
